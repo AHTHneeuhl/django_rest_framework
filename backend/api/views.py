@@ -5,11 +5,10 @@ from products.models import Products
 from products.serializers import ProductsSerializer
 
 
-@api_view(["GET"])
+@api_view(["POST"])
 def api_home(request, *args, **kwargs):
     """DRF API View"""
-    instance = Products.objects.all().order_by("?").first()
-    data = {}
-    if instance:
-        data = ProductsSerializer(instance).data
-    return Response(data)
+    serializer = ProductsSerializer(data=request.data)
+    if serializer.is_valid(raise_exception=True):
+        print(serializer.data)
+    return Response(serializer.data)
